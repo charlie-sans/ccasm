@@ -171,6 +171,17 @@ function parse(tokens)
             else
                 report(i.line, "Instruction " .. i.type .. " expects type of register or number")
             end
+        elseif i.type == instructions['rdclose'] then
+            local modem = peripheral.find("modem")
+            if not modem then report(i.line, "No modem found") end
+            local val = advance()
+            if isRegister(val.lexeme) then
+                report(i.line, "Instruction " .. i.type .. " expects type of number")
+            elseif val.type == 'NUMBER' then
+                modem.close(val.literal)
+            else
+                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+            end
             -- [rednet end]        
        
 
