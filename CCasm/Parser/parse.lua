@@ -172,14 +172,7 @@ function parse(tokens)
                 report(i.line, "Instruction " .. i.type .. " expects type of register or number")
             end
             -- [rednet end]        
-        elseif i.type == instructions['shl'] then
-            local b = table.remove(stack)
-            local a = table.remove(stack)
-            table.insert(stack, a << b)
-        elseif i.type == instructions['shr'] then
-            local b = table.remove(stack)
-            local a = table.remove(stack)
-            table.insert(stack, a >> b)
+       
 
         elseif i.type == instructions['stk'] then
             write(table.concat(stack, ", "))
