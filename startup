@@ -1,0 +1,2 @@
+
+shell.setAlias("minex", "/minex/main.lua")
