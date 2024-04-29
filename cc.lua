@@ -1,6 +1,6 @@
-local lex = require "CCasm.Lexer.lex"
-local Token = require "CCasm.Lexer.Token"
-local parse = require "CCasm.Parser.parse"
+local lex = require "CCasm.Lexer.lex.lua"
+local Token = require "CCasm.Lexer.Token.lua"
+local parse = require "CCasm.Parser.parse.lua"
 register = {
     --[[ General Purpose Registers ]]--
     ['a'] = Token('NULL'),
@@ -19,7 +19,7 @@ register = {
     ['n'] = Token('NULL'),
     ['o'] = Token('NULL'),
     ['p'] = Token('NULL'),
-    
+
     ['rax']  = Token('NULL'),
     ['rbx']  = Token('NULL'),
     ['rcx']  = Token('NULL'),
