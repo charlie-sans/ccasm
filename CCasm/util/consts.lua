@@ -30,6 +30,7 @@ local instructions = {
     ['stk'] = 'STACK_PRINT',
     ['shl'] = 'SHIFT_LEFT',
     ['shr'] = 'SHIFT_RIGHT',
+    ['read'] = 'READ_INPUT',
     ['rdinit'] = 'REDNET-INIT',
     ['rdiopen'] = 'RED-NET-IS-OPEN?',
     ['rdclose'] = 'REDNET-CLOSE',

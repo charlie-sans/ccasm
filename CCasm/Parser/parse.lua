@@ -184,7 +184,24 @@ function parse(tokens)
             else
                 report(i.line, "Instruction " .. i.type .. " expects type of register or number")
             end
-        
+        else if i.type == instructions['read'] then
+            local to_match = advance()
+            local input = io.read()
+            local match = ""
+            if isRegister(to_match.lexeme) then
+                register[to_match.lexeme] = match
+                if to_match == input then
+                    table.insert(stack, 1)
+                else
+                    table.insert(stack, 0)
+                end
+
+            else  
+                report(i.line, "Instruction " .. i.type .. " expects type of register")
+            end
+
+
+
          elseif i.type == instructions['rdiopen'] then
             local modem = peripheral.find("modem")
             if not modem then report(i.line, "No modem found") end
