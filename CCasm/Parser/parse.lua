@@ -184,20 +184,19 @@ function parse(tokens)
             else
                 report(i.line, "Instruction " .. i.type .. " expects type of register or number")
             end
-        else if i.type == instructions['read'] then
-            local to_match = advance()
+        elseif i.type == instructions['read'] then
+            -- read stdin and pull == check
+            local to_match = advance() -- string reg contianing the string to match
             local input = io.read()
             if isRegister(to_match.lexeme) then
-                local match =  register[to_match.lexeme] 
-               
-                if match == input then
+                if to_match.literal == input then
                     table.insert(stack, 1)
                 else
                     table.insert(stack, 0)
                 end
             end
             
-
+           
 
          elseif i.type == instructions['rdiopen'] then
             local modem = peripheral.find("modem")
