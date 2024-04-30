@@ -9,7 +9,8 @@ correct:
   hlt
 set bax "what is the oppiset of no?"
 out bax
-read a 
+read rbx 
+cmp rbx a 
 jeq correct
 jne testout
 
