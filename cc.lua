@@ -49,6 +49,8 @@ register = {
     ['bsi']  = Token('NULL'),
     ['bdi']  = Token('NULL'),
     ['bip']  = Token('NULL'),
+    ['cc']  = Token('NULL'),
+    ['temp']  = Token('NULL'),
 
     --[[ Instruction Pointer ]]--
     ['ip'] = 1,
@@ -78,6 +80,7 @@ end
 local function run_file()
     local asm = fs.open(args[1], 'r')
     local code = asm.readAll()
+    print(code)
     asm.close()
     parse( lex(code) )
 end

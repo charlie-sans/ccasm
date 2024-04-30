@@ -4,4 +4,4 @@ psh rax
 psh bax
 add
 ldr  c
-out 
+out c

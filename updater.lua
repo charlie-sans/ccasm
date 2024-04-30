@@ -18,4 +18,4 @@ shell.run("wget", githubraw .. "/Parser/parse.lua", "/CCasm/Parser/parse.lua")
 
 shell.run("wget", githubraw .. "/util/switch.lua", "/CCasm/util/switch.lua")
 shell.run("wget", githubraw .. "/util/consts.lua", "/CCasm/util/consts.lua")
-shell.run("wget", githubraw .. "/editasm", "/editasm")
+shell.run("wget", githubraw .. "/asm", "/asm")

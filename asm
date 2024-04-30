@@ -376,7 +376,9 @@ local function redrawMenu()
 	-- Reset cursor
 	term.setCursorPos( x - scrollX, y - scrollY )
 end
-
+function run(path)
+	shell.run(path)
+end
 local tMenuFuncs = { 
 	Save = function()
 		if bReadOnly then
@@ -476,12 +478,12 @@ local tMenuFuncs = {
 		bRunning = false
 	end,
 	Run = function()
-		local sTempPath = "/.temp"
-	    local sTempASM  = "/.asmtemp"
+		local sTempPath = "/cc.lua temp"
+	    local sTempASM  = "temp"
 	    local sCompile = CompilerLocation .. " -c " .. sTempPath .. " " .. sTempASM
 	    local sRun =  CompilerLocation .. " -r " .. sTempASM 
-        local ok, err = save( sTempPath )
-		errz = os.run({},"../cc.lua /.temp.asm")
+        local ok, err = save( sTempASM )
+		errz = run(sTempPath)
 		print(errz)
 		redrawMenu()
     end
