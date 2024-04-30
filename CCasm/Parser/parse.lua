@@ -168,11 +168,56 @@ function parse(tokens)
                 report(i.line, "Instruction " .. i.type .. " expects type of number")
             elseif val.type == 'NUMBER' then
                 modem.open(val.literal)
+                rednet.open(modem)
             else
                 report(i.line, "Instruction " .. i.type .. " expects type of register or number")
             end
+        elseif i.type == instructions['rdclose'] then
+            local modem = peripheral.find("modem")
+            if not modem then report(i.line, "No modem found") end
+            local val = advance()
+            if isRegister(val.lexeme) then
+                report(i.line, "Instruction " .. i.type .. " expects type of number")
+            elseif val.type == 'NUMBER' then
+                rednet.close(val.literal)
+                modem.close(modem)
+            else
+                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+            end
+        
+         elseif i.type == instructions['rdiopen'] then
+            local modem = peripheral.find("modem")
+            if not modem then report(i.line, "No modem found") end
+            local val = rednet.isOpen(modem)
+            if val == true then
+                table.insert(stack, 1)
+            else
+                table.insert(stack, 0)
+            end
+        
+            
+    
+         elseif i.type == instructions['rdsend'] then
+            local data = advance()
+            local recipient = advance()
+            local ID = advance()
+            if isRegister(recipient) then
+                if isRegister(data) then
+                    rednet.send(register[recipient], register[data], register[ID])
+                elseif data.type == 'STRING' then
+                    rednet.send(register[recipient], data.literal, register[ID])
+                else
+                    report(i.line, "Instruction " .. i.type .. " expects type of register or string")
+                end
+            end
+
+        -- elseif i.type == instructions['rd'] then
+        -- elseif i.type == instructions['rd'] then
+        -- elseif i.type == instructions['rd'] then
+        -- elseif i.type == instructions['rd'] then
+        -- elseif i.type == instructions['rd'] then
             -- [rednet end]        
-       
+            
 
         elseif i.type == instructions['stk'] then
             write(table.concat(stack, ", "))
