@@ -195,11 +195,8 @@ function parse(tokens)
                 else
                     table.insert(stack, 0)
                 end
-
-            else  
-                report(i.line, "Instruction " .. i.type .. " expects type of register")
             end
-
+        
 
 
          elseif i.type == instructions['rdiopen'] then
