@@ -168,7 +168,7 @@ function parse(tokens)
                 report(i.line, "Instruction " .. i.type .. " expects type of number")
             elseif val.type == 'NUMBER' then
                 modem.open(val.literal)
-                rednet.open(modem)
+                rednet.open("modem")
             else
                 report(i.line, "Instruction " .. i.type .. " expects type of register or number")
             end
@@ -179,8 +179,8 @@ function parse(tokens)
             if isRegister(val.lexeme) then
                 report(i.line, "Instruction " .. i.type .. " expects type of number")
             elseif val.type == 'NUMBER' then
-                rednet.close(val.literal)
-                modem.close(modem)
+                rednet.close("modem")
+                modem.close(val.literal)
             else
                 report(i.line, "Instruction " .. i.type .. " expects type of register or number")
             end
@@ -188,7 +188,7 @@ function parse(tokens)
          elseif i.type == instructions['rdiopen'] then
             local modem = peripheral.find("modem")
             if not modem then report(i.line, "No modem found") end
-            local val = rednet.isOpen(modem)
+            local val = rednet.isOpen()
             if val == true then
                 table.insert(stack, 1)
             else
