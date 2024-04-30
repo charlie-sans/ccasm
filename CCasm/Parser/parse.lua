@@ -168,7 +168,7 @@ function parse(tokens)
                 report(i.line, "Instruction " .. i.type .. " expects type of number")
             elseif val.type == 'NUMBER' then
                 modem.open(val.literal)
-                rednet.open("modem")
+                peripheral.find("modem", rednet.open)
             else
                 report(i.line, "Instruction " .. i.type .. " expects type of register or number")
             end
@@ -179,7 +179,7 @@ function parse(tokens)
             if isRegister(val.lexeme) then
                 report(i.line, "Instruction " .. i.type .. " expects type of number")
             elseif val.type == 'NUMBER' then
-                rednet.close("modem")
+                rednet.close()
                 modem.close(val.literal)
             else
                 report(i.line, "Instruction " .. i.type .. " expects type of register or number")
