@@ -187,16 +187,16 @@ function parse(tokens)
         else if i.type == instructions['read'] then
             local to_match = advance()
             local input = io.read()
-            local match = ""
             if isRegister(to_match.lexeme) then
-                register[to_match.lexeme] = match
-                if to_match == input then
+                local match =  register[to_match.lexeme] 
+               
+                if match == input then
                     table.insert(stack, 1)
                 else
                     table.insert(stack, 0)
                 end
             end
-        
+            
 
 
          elseif i.type == instructions['rdiopen'] then
