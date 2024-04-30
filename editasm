@@ -183,6 +183,40 @@ local tKeywords = {
 	['dcb'] = true,
 	--------------
 	["define"] = true,
+	['set'] = true,
+  
+    ['mov'] = true,
+    ['psh'] = true,
+    ['pop'] = true,
+    ['dup'] = true,
+    ['swp'] = true,
+    ['ldr'] = true,
+    ['str'] = true,
+    ['add'] = true,
+    ['sub'] = true,
+    ['mul'] = true,
+    ['pow'] = true,
+    ['div'] = true,
+    ['mod'] = true,
+
+    ['jeq'] = true,
+    ['jne'] = true,
+    ['slp'] = true,
+    ['utc'] = true,
+    ['dmp'] = true,
+    ['key'] = true,
+    ['pos'] = true,
+    ['chr'] = true,
+    ['out'] = true,
+    ['hlt'] = true,
+    ['clr'] = true,
+    ['stk'] = true,
+    ['shl'] = true,
+    ['shr'] = true,
+    ['rdinit'] = true,
+    ['rdget'] = true,
+    ['rdset'] = true,
+    ['reg'] = true,
 }
 
 local function tryWrite( sLine, regex, colour )
@@ -201,32 +235,32 @@ local function tryWrite( sLine, regex, colour )
 end
 
 -- ACC highlighting is near impossible, so screw it.
-local function writeHighlighted( sLine )
-	while string.len(sLine) > 0 do	
-		sLine = 
-			tryWrite( sLine, "^.begin+", beginColour ) or
-			tryWrite( sLine, "^%;%[%[.;%]%]", commentColour ) or
-			tryWrite( sLine, "^[%#.*]", stringColour ) or
-			tryWrite( sLine, "^[\$]...[0123456789abcefABCDEF]", stringColour ) or
-			tryWrite( sLine, "^[\$].[0123456789abcefABCDEF]", stringColour ) or
-			tryWrite( sLine, "^%#%$%", stringColour ) or
-			tryWrite( sLine, "^\".-[^\\]\"", stringColour ) or
-			tryWrite( sLine, "^[\'].*[\']", stringColour ) or
-			tryWrite( sLine, "^\'.-[^\\]\'", stringColour ) or
-			tryWrite( sLine, "^%[%[.-%]%]", stringColour ) or
-			tryWrite( sLine, "^%;.*", commentColour ) or
-			tryWrite( sLine, "^.*:", labelColour ) or
-			tryWrite( sLine, "^[\(]", brakColour ) or
-			tryWrite( sLine, "^[\)]", brakColour ) or
-			tryWrite( sLine, "^[%w_]+", function( match )
-				if tKeywords[ string.lower(match) ] then
-					return keywordColour
-				end
-				return textColour
-			end ) or
-			tryWrite( sLine, "^[^%w_]", textColour )
-	end
+local function writeHighlighted(sLine)
+    while string.len(sLine) > 0 do
+        sLine =
+            tryWrite(sLine, "^%a*begin%a*", beginColour) or
+            tryWrite(sLine, "^%-%-%[%[.-%%]%]", commentColour) or
+            tryWrite(sLine, "^#[^\n]*", stringColour) or
+            tryWrite(sLine, "^%$[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]", stringColour) or
+            tryWrite(sLine, "^%$[0-9a-fA-F]", stringColour) or
+            tryWrite(sLine, "^%#%$%%", stringColour) or
+            tryWrite(sLine, "^\".-[^\\]\"", stringColour) or
+            tryWrite(sLine, "^\'.-[^\\]\'", stringColour) or
+            tryWrite(sLine, "^%[%[.-]]", stringColour) or
+            tryWrite(sLine, "^%;.*", commentColour) or
+            tryWrite(sLine, "^.*:", labelColour) or
+            tryWrite(sLine, "^%(", brakColour) or
+            tryWrite(sLine, "^%)", brakColour) or
+            tryWrite(sLine, "^[%w_]+", function(match)
+                if tKeywords[string.lower(match)] then
+                    return keywordColour
+                end
+                return textColour
+            end) or
+            tryWrite(sLine, "^[^%w_]", textColour)
+    end
 end
+
 
 local tCompletions
 local nCompletion
@@ -442,86 +476,13 @@ local tMenuFuncs = {
 		bRunning = false
 	end,
 	Run = function()
-		term.setCursorPos(1, h)
-        term.clearLine()
-        sleep(0)
-        write("Run program? (Y/n*) ")
-	    local _,ch = os.pullEvent("char")
-	    ch = string.lower(ch)
-	    if(ch ~= "y")then redrawMenu() return end
-		if(CompilerLocation == "")then
-			local w, h = term.getSize()
-			redrawMenu()
-		    term.setCursorPos(1,h)
-		    term.clearLine()
-		    write("Enter location of compiler: ")
-		    CompilerLocation = read()
-		    if(not fs.exists(CompilerLocation))then
-		    	term.setCursorPos(1,h)
-		      	term.clearLine()
-		       	write("File not found, press any key. ")
-		       	os.pullEvent("key")
-		       	redrawMenu()
-		     	return 
-		    else
-		       	os.loadAPI(CompilerLocation)
-		       	if(not _G.ASM)then
-		       		term.setCursorPos(1,h)
-					term.clearLine()
-					write("Compiler not valid, press any key.")
-					os.pullEvent("key")
-		    		redrawMenu()
-		    		return 
-		      	end
-		    end
-		end
-	    local sTempPath = "/.temp"
+		local sTempPath = "/.temp"
 	    local sTempASM  = "/.asmtemp"
 	    local sCompile = CompilerLocation .. " -c " .. sTempPath .. " " .. sTempASM
 	    local sRun =  CompilerLocation .. " -r " .. sTempASM 
         local ok, err = save( sTempPath )
-        redrawMenu()
-        term.setCursorPos(1, h)
-        term.clearLine()
-        if ok then
-        	term.setCursorPos(1, h)
-        	term.clearLine()
-            write("Press any key to compile.")
-            os.pullEvent("key")
-            redrawMenu()
-            term.setCursorPos(1, h)
-            term.clearLine()
-            sleep(0)
-            write("Run in Step mode? (Y/n*): ")
-	    	local _,ch = os.pullEvent("char")
-	    	ch = string.lower(ch)
-	    	local step = false
-	    	if(ch == "y")then sRun = sRun .. " -s" end
-	    	redrawMenu()
-	    	term.setCursorPos(1, h)
-            term.clearLine()
-           	write("Press any key to run.")
-            local nTask = shell.openTab( sCompile )
-            if nTask then
-               	 	shell.switchTab( nTask )
-               	 	redrawMenu()
-               		term.setCursorPos(1, h)
-	        		os.pullEvent("key")
-	        		nTask = shell.openTab( sRun )
-	        	if nTask then
-	        		shell.switchTab( nTask )
-	    			redrawMenu()
-	    		else
-	    			sStatus="Error running ASM"
-	 		    end
-            else
-                sStatus="Error starting Task"
-            end
-            fs.delete( sTempPath )
-            fs.delete( sTempASM )
-        else
-            sStatus="Error saving to "..sTempPath
-        end
+		errz = os.run({},"../cc.lua /.temp.asm")
+		print(errz)
 		redrawMenu()
     end
 }

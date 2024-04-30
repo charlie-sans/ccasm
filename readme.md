@@ -1,7 +1,9 @@
-welcome to the rebagged version of ccasm.
+Welcome to CLAUS or Computer LocAlised Utility Software.
 
-this version actualy implements some nice things like rednet.
-the dammed bitshifting shit.
-and other things so that we actualy have a working programming language.
+this is a suit of tools for ComputerCraft /CC:Tweaked that allows you to write ASM like code from CCasm with a modified instruction set.
 
-all credits go to the origonal creator of CCASM
+this also has a fixed version of editasm that is provided with the 6502 compiler that was made. 
+
+
+
+this modified version of CCasm is provided with new instructions that allow the user to actualy do things with it.
