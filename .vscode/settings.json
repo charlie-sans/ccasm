@@ -1,8 +1,0 @@
-{
-    "Lua.diagnostics.globals": [
-        "shell"
-    ],
-    "Lua.diagnostics.disable": [
-        "undefined-global"
-    ]
-}
