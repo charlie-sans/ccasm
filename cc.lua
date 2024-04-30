@@ -80,7 +80,7 @@ end
 local function run_file()
     local asm = fs.open(args[1], 'r')
     local code = asm.readAll()
-    print(code)
+   
     asm.close()
     parse( lex(code) )
 end

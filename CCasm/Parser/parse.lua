@@ -83,7 +83,12 @@ function parse(tokens)
         end
     end
 
+    local function input()
+        cmp = io.read()
+        return cmp
+    end
 
+    
     while register['ip'] <= #tokens do
         local i = advance()
         if i.type == instructions['set'] then
@@ -185,20 +190,13 @@ function parse(tokens)
                 report(i.line, "Instruction " .. i.type .. " expects type of register or number")
             end
         elseif i.type == instructions['read'] then
-            -- read stdin and pull == check
-            local to_match = advance() -- string reg contianing the string to match
-            
-            if isRegister(to_match.lexeme) then
-                local input = io.read("*l")
-                if to_match == input then
-                    table.insert(stack, 1)
-                else
-                    table.insert(stack, 0)
-                end
-            end
-            
-           
+                    -- read stdin and store to a register
+                    local reg = advance()
+                    assertRegister(reg.lexeme)
+                    register[reg.lexeme] = input()
+                    sleep(10)
 
+                    
          elseif i.type == instructions['rdiopen'] then
             local modem = peripheral.find("modem")
             if not modem then report(i.line, "No modem found") end
