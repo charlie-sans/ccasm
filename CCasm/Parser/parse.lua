@@ -190,7 +190,7 @@ function parse(tokens)
             local input = io.read("*l")
             
             if isRegister(to_match.lexeme) then
-                if to_match.literal == input then
+                if to_match == input then
                     table.insert(stack, 1)
                 else
                     table.insert(stack, 0)
