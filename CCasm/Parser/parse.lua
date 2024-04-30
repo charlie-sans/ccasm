@@ -187,9 +187,9 @@ function parse(tokens)
         elseif i.type == instructions['read'] then
             -- read stdin and pull == check
             local to_match = advance() -- string reg contianing the string to match
-            local input = io.read("*l")
             
             if isRegister(to_match.lexeme) then
+                local input = io.read("*l")
                 if to_match == input then
                     table.insert(stack, 1)
                 else
