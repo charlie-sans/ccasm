@@ -8,7 +8,7 @@ fs.makeDir("/CCasm/Lexer")
 fs.makeDir("/CCasm/Parser")
 fs.makeDir("/CCasm/util")
 
-shell.run("wget", githubraw .. "https://raw.githubusercontent.com/charlie-sans/ccasm/main/CCasm/cc.lua", "/cc.lua")
+shell.run("wget", githubraw .. "https://raw.githubusercontent.com/charlie-sans/ccasm/main/cc.lua", "/cc.lua")
 
 
 shell.run("wget", githubraw .. "/Lexer/lex.lua", "/CCasm/Lexer/lex.lua")
