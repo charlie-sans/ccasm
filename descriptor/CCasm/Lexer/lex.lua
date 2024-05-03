@@ -72,6 +72,12 @@ local function lex(source)
         add_token('STRING', source:sub(start, current - 1))
         advance()
     end
+    local function call()
+        start = current
+        while peek() ~= '(' and not at_end() do advance() end
+        add_token('CALL', source:sub(start, current - 1))
+        advance()
+    end
 
     local function is_alpha(c)
         return c:match('[%a_]')

@@ -20,6 +20,7 @@ register = {
     ['o'] = Token('NULL'),
     ['p'] = Token('NULL'),
 
+    ---[[ Stack Registers ]]--
     ['rax']  = Token('NULL'),
     ['rbx']  = Token('NULL'),
     ['rcx']  = Token('NULL'),
@@ -29,6 +30,8 @@ register = {
     ['rsi']  = Token('NULL'),
     ['rdi']  = Token('NULL'),
     ['rip']  = Token('NULL'),
+
+    --[[ Special Registers ]]--
 
     ['aax']  = Token('NULL'),
     ['abx']  = Token('NULL'),
@@ -80,7 +83,7 @@ end
 local function run_file()
     local asm = fs.open(args[1], 'r')
     local code = asm.readAll()
-   
+ 
     asm.close()
     parse( lex(code) )
 end

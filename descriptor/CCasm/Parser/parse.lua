@@ -118,7 +118,7 @@ function parse(tokens)
             elseif val.type == 'NUMBER' then
                 table.insert(stack, val.literal)
             else
-                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+                report(i.line, "Instruction " .. i.type .. " expects a register or a number based on int/float")
             end
         elseif i.type == instructions['pop'] then
             table.remove(stack)
@@ -132,7 +132,7 @@ function parse(tokens)
             local reg = advance()
             assertRegister(reg.lexeme)
             if type(register[reg.lexeme]) == 'table' then
-                if register[reg.lexeme].type == 'NULL' then report(i.line,  "Cannont store type NULL") end
+                if register[reg.lexeme].type == 'NULL' then report(i.line,  "Cannot store nothing srry!") end
             end
             table.insert(stack, register[reg.lexeme])
             register[reg.lexeme] = Token('NULL')
@@ -163,49 +163,35 @@ function parse(tokens)
             -- custom instructions
 
             -- [rednet start]
-        elseif i.type == instructions['rdinit'] then
-            -- red net instructions
-            
+        elseif i.type == instructions['rdinit'] then 
             local modem = peripheral.find("modem")
             if not modem then report(i.line, "No modem found") end
             local val = advance()
             if isRegister(val.lexeme) then
-                report(i.line, "Instruction " .. i.type .. " expects type of number")
+                report(i.line, "Instruction " .. i.type .. " expects a type of number like int or float.")
             elseif val.type == 'NUMBER' then
                 modem.open(val.literal)
                 peripheral.find("modem", rednet.open)
             else
-                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+                report(i.line, "Instruction " .. i.type .. " expects a register or a number based on int/float")
             end
         elseif i.type == instructions['rdclose'] then
             local modem = peripheral.find("modem")
             if not modem then report(i.line, "No modem found") end
             local val = advance()
             if isRegister(val.lexeme) then
-                report(i.line, "Instruction " .. i.type .. " expects type of number")
+                report(i.line, "Instruction " .. i.type .. " expects a type of number like int or float.")
             elseif val.type == 'NUMBER' then
                 rednet.close()
                 modem.close(val.literal)
             else
-                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+                report(i.line, "Instruction " .. i.type .. " expects a register or a number based on int/float")
             end
-        elseif i.type == instructions['read'] then
-                    -- read stdin and store to a register
-                    local reg = advance()
-                    if isRegister(reg.lexeme) then
-                        register[reg.lexeme] = input()
-                    end
-        elseif i.type == instructions['scmp'] then
-                    -- string compare
-                    local b = table.remove(stack)
-                    local a = table.remove(stack)
-                    if a == b then
-                        table.insert(stack, 1)
-                    else
-                        table.insert(stack, 0)
 
-                    end
-                    
+        
+
+       
+        
         elseif i.type == instructions['rdiopen'] then
             local modem = peripheral.find("modem")
             if not modem then report(i.line, "No modem found") end
@@ -218,7 +204,7 @@ function parse(tokens)
         
             
     
-         elseif i.type == instructions['rdsend'] then
+        elseif i.type == instructions['rdsend'] then
             local data = advance()
             local recipient = advance()
             local ID = advance()
@@ -228,9 +214,10 @@ function parse(tokens)
                 elseif data.type == 'STRING' then
                     rednet.send(register[recipient], data.literal, register[ID])
                 else
-                    report(i.line, "Instruction " .. i.type .. " expects type of register or string")
+                    report(i.line, "Instruction " .. i.type .. " expects a register or a string object.")
                 end
             end
+    
 
         -- elseif i.type == instructions['rd'] then
         -- elseif i.type == instructions['rd'] then
@@ -264,7 +251,7 @@ function parse(tokens)
             elseif val.type == 'NULL' then
                 table.insert(stack, 'NULL' == register[reg.lexeme].type and 1 or 0)
             else
-                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+                report(i.line, "Instruction " .. i.type .. " expects a register or a number based on int/float")
             end
         elseif i.type == instructions['jmp'] then
             local val = advance()
@@ -287,7 +274,7 @@ function parse(tokens)
             elseif val.type == 'NUMBER' then
                 sleep(val.literal)
             else
-                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+                report(i.line, "Instruction " .. i.type .. " expects a register or a number based on int/float")
             end
         elseif i.type == instructions['utc'] then
             local reg = advance()
@@ -307,7 +294,7 @@ function parse(tokens)
             elseif xTok.type == 'NUMBER' then
                 xPos = xTok.literal
             else
-                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+                report(i.line, "Instruction " .. i.type .. " expects a register or a number based on int/float")
             end
 
             if isRegister(yTok.lexeme) then
@@ -315,7 +302,7 @@ function parse(tokens)
             elseif xTok.type == 'NUMBER' then
                 yPos = yTok.literal
             else
-                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+                report(i.line, "Instruction " .. i.type .. " expects a register or a number based on int/float")
             end
 
             term.setCursorPos(xPos, yPos)
@@ -326,7 +313,7 @@ function parse(tokens)
             elseif val.type == 'NUMBER' then
                 write(string.char(val.literal))
             else
-                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+                report(i.line, "Instruction " .. i.type .. " expects a register or a number based on int/float")
             end
         elseif i.type == instructions['out'] then
             local val = advance()
@@ -335,7 +322,7 @@ function parse(tokens)
             elseif val.type == 'NUMBER' then
                 write(val.literal)
             else
-                report(i.line, "Instruction " .. i.type .. " expects type of register or number")
+                report(i.line, "Instruction " .. i.type .. " expects a register or a number based on int/float")
             end
         elseif i.type == instructions['dmp'] then
             printt( rev(stack) )
